@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#fffaf5">
+  <title>Tiny Care — Little things, lots of love</title>
+  <style>
+    :root {
+      --ink: #303b38;
+      --muted: #78817c;
+      --cream: #fffaf5;
+      --paper: #ffffff;
+      --green: #647b68;
+      --green-dark: #4d6352;
+      --peach: #f6d8c5;
+      --line: #eee9e2;
+      --shadow: 0 14px 34px rgba(70, 68, 55, .08);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--cream);
+      font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+    }
+    button, a { font: inherit; }
+    a { color: inherit; text-decoration: none; }
+    .announcement {
+      padding: 10px 18px;
+      background: var(--green);
+      color: white;
+      text-align: center;
+      font-size: 12px;
+      letter-spacing: .08em;
+    }
+    .site-header {
+      height: 78px;
+      padding: 0 7%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      background: rgba(255, 250, 245, .96);
+      border-bottom: 1px solid rgba(238, 233, 226, .8);
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--green-dark);
+      font-family: Georgia, serif;
+      font-size: 27px;
+      font-weight: 700;
+      letter-spacing: -.06em;
+    }
+    .brand-mark { font-family: sans-serif; font-size: 23px; }
+    .nav-links { display: flex; gap: 32px; color: #606a64; font-size: 14px; }
+    .nav-links a:hover, .text-link:hover { color: var(--green); }
+    .cart-button {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 10px 15px;
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      color: var(--ink);
+      cursor: pointer;
+      font-size: 13px;
+    }
+    .cart-count {
+      min-width: 21px;
+      height: 21px;
+      display: inline-grid;
+      place-items: center;
+      padding: 0 5px;
+      border-radius: 50%;
+      background: #e8eee7;
+      color: var(--green-dark);
+      font-size: 11px;
+      font-weight: 700;
+    }
+    main { overflow: hidden; }
+    .hero {
+      min-height: 500px;
+      padding: 65px 9% 68px;
+      display: grid;
+      grid-template-columns: 1.05fr .95fr;
+      align-items: center;
+      gap: 45px;
+      background: #f5eee5;
+    }
+    .eyebrow {
+      margin: 0 0 17px;
+      color: var(--green);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .17em;
+      text-transform: uppercase;
+    }
+    h1, h2, h3, p { margin-top: 0; }
+    .hero h1 {
+      max-width: 530px;
+      margin-bottom: 18px;
+      font-family: Georgia, serif;
+      font-size: clamp(42px, 5vw, 66px);
+      font-weight: 400;
+      letter-spacing: -.055em;
+      line-height: 1.06;
+    }
+    .hero h1 em { color: var(--green); font-weight: 400; }
+    .hero-copy {
+      max-width: 425px;
+      margin-bottom: 27px;
+      color: #717a74;
+      font-size: 15px;
+      line-height: 1.8;
+    }
+    .primary-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 21px;
+      border-radius: 4px;
+      background: var(--green);
+      color: white;
+      font-size: 13px;
+      transition: background .2s, transform .2s;
+    }
+    .primary-link:hover { background: var(--green-dark); transform: translateY(-2px); }
+    .hero-art {
+      position: relative;
+      min-height: 350px;
+      display: grid;
+      place-items: center;
+    }
+    .sun {
+      position: absolute;
+      width: min(340px, 78%);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: #e8cbb5;
+    }
+    .baby-illustration {
+      position: relative;
+      z-index: 1;
+      width: 300px;
+      height: 300px;
+      display: grid;
+      place-items: center;
+      font-size: 155px;
+      filter: drop-shadow(0 15px 10px rgba(91, 75, 59, .12));
+    }
+    .floating-note {
+      position: absolute;
+      right: 0;
+      bottom: 38px;
+      z-index: 2;
+      padding: 13px 18px;
+      border-radius: 8px;
+      background: white;
+      box-shadow: var(--shadow);
+      color: var(--green-dark);
+      font-family: Georgia, serif;
+      font-size: 14px;
+      transform: rotate(3deg);
+    }
+    .section { padding: 75px 8%; }
+    .section-heading {
+      margin-bottom: 32px;
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .section-heading h2 {
+      margin-bottom: 0;
+      font-family: Georgia, serif;
+      font-size: 36px;
+      font-weight: 400;
+      letter-spacing: -.04em;
+    }
+    .section-heading p { margin: 0 0 4px; color: var(--muted); font-size: 13px; }
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+    .category-card {
+      min-height: 180px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      background: #f3eae1;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .category-card:nth-child(2) { background: #e9eee6; }
+    .category-card:nth-child(3) { background: #f5e6e1; }
+    .category-card:nth-child(4) { background: #f1eddf; }
+    .category-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+    .category-icon { font-size: 40px; }
+    .category-card span:last-child { font-family: Georgia, serif; font-size: 18px; }
+    .products-section { padding-top: 68px; background: #fff; }
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+    .product-card { min-width: 0; }
+    .product-image {
+      position: relative;
+      min-height: 235px;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      border-radius: 7px;
+      background: #f4efe8;
+      font-size: 80px;
+    }
+    .product-card:nth-child(2) .product-image { background: #edf0e9; }
+    .product-card:nth-child(3) .product-image { background: #f4e8e3; }
+    .product-card:nth-child(4) .product-image { background: #f1efdf; }
+    .badge {
+      position: absolute;
+      top: 13px;
+      left: 13px;
+      padding: 6px 9px;
+      border-radius: 3px;
+      background: white;
+      color: var(--green-dark);
+      font-size: 10px;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+    .product-info { padding: 15px 2px 0; }
+    .product-info h3 { margin-bottom: 7px; font-family: Georgia, serif; font-size: 17px; font-weight: 400; }
+    .product-meta { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .price { color: var(--green-dark); font-size: 14px; font-weight: 700; }
+    .add-button {
+      padding: 8px 11px;
+      border: 1px solid #dce3da;
+      border-radius: 4px;
+      background: white;
+      color: var(--green-dark);
+      cursor: pointer;
+      font-size: 11px;
+      transition: all .2s;
+    }
+    .add-button:hover { background: var(--green); border-color: var(--green); color: white; }
+    .promise {
+      margin: 0 8%;
+      padding: 28px 34px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      gap: 20px;
+      border-radius: 8px;
+      background: #f5eee5;
+      color: #59675d;
+      font-size: 13px;
+    }
+    .promise span { display: flex; align-items: center; gap: 9px; }
+    .newsletter {
+      padding: 74px 20px 78px;
+      text-align: center;
+    }
+    .newsletter h2 {
+      margin-bottom: 10px;
+      font-family: Georgia, serif;
+      font-size: 34px;
+      font-weight: 400;
+      letter-spacing: -.04em;
+    }
+    .newsletter p { color: var(--muted); font-size: 14px; }
+    .newsletter-form {
+      max-width: 440px;
+      margin: 22px auto 0;
+      display: flex;
+      gap: 8px;
+    }
+    .newsletter-form input {
+      min-width: 0;
+      flex: 1;
+      padding: 13px 14px;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      background: white;
+      color: var(--ink);
+      font: inherit;
+      font-size: 13px;
+    }
+    .newsletter-form button {
+      padding: 0 17px;
+      border: 0;
+      border-radius: 4px;
+      background: var(--green);
+      color: white;
+      cursor: pointer;
+      font-size: 12px;
+    }
+    .form-message { min-height: 18px; margin: 12px 0 0; color: var(--green-dark); font-size: 12px; }
+    footer {
+      padding: 25px 8%;
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    @media (max-width: 760px) {
+      .site-header { height: 68px; padding: 0 5%; }
+      .nav-links { gap: 15px; font-size: 12px; }
+      .hero { padding: 52px 7%; grid-template-columns: 1fr; gap: 15px; text-align: center; }
+      .hero-copy, .hero h1 { margin-left: auto; margin-right: auto; }
+      .hero-art { min-height: 270px; }
+      .baby-illustration { width: 240px; height: 240px; font-size: 125px; }
+      .sun { width: 250px; }
+      .floating-note { right: 7%; bottom: 20px; }
+      .section { padding: 58px 6%; }
+      .category-grid, .product-grid { grid-template-columns: repeat(2, 1fr); }
+      .category-card { min-height: 150px; }
+      .product-image { min-height: 190px; }
+      .promise { margin: 0 6%; padding: 24px; justify-content: flex-start; }
+      .section-heading h2 { font-size: 30px; }
+    }
+    @media (max-width: 460px) {
+      .announcement { font-size: 10px; }
+      .brand { font-size: 22px; }
+      .brand-mark { font-size: 19px; }
+      .nav-links { gap: 11px; }
+      .nav-links a:first-child { display: none; }
+      .cart-button { padding: 8px 10px; font-size: 11px; }
+      .section-heading { align-items: flex-start; flex-direction: column; }
+      .category-grid { gap: 11px; }
+      .category-card { min-height: 130px; padding: 14px; }
+      .category-icon { font-size: 33px; }
+      .product-grid { gap: 16px 11px; }
+      .product-image { min-height: 155px; font-size: 62px; }
+      .product-info h3 { font-size: 15px; }
+      .add-button { padding: 7px 8px; font-size: 10px; }
+      .newsletter h2 { font-size: 29px; }
+      footer { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+  <div class="announcement">A little something for your little one — free shipping on orders over $50</div>
+  <header class="site-header">
+    <a class="brand" href="#" aria-label="Tiny Care home"><span class="brand-mark">✿</span> tiny care</a>
+    <nav class="nav-links" aria-label="Main navigation">
+      <a href="#shop">Shop</a>
+      <a href="#categories">Categories</a>
+      <a href="#about">Our promise</a>
+    </nav>
+    <button class="cart-button" type="button" aria-label="Shopping cart">
+      <span>Bag</span><span class="cart-count" aria-live="polite">0</span>
+    </button>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div>
+        <p class="eyebrow">Made for tiny beginnings</p>
+        <h1>Little things,<br><em>lots of love.</em></h1>
+        <p class="hero-copy">Thoughtful, gentle essentials for your baby's biggest little moments. Made with care, picked with love.</p>
+        <a class="primary-link" href="#shop">Shop the collection <span aria-hidden="true">→</span></a>
+      </div>
+      <div class="hero-art" aria-label="Illustration of a baby wrapped in a blanket">
+        <div class="sun"></div>
+        <div class="baby-illustration" aria-hidden="true">👶🏻</div>
+        <div class="floating-note">Soft starts here ♡</div>
+      </div>
+    </section>
+
+    <section class="section" id="categories">
+      <div class="section-heading">
+        <div><p class="eyebrow">A little of everything</p><h2>Shop by category</h2></div>
+        <p>The everyday favorites, all in one place.</p>
+      </div>
+      <div class="category-grid">
+        <a class="category-card" href="#shop"><span class="category-icon" aria-hidden="true">🧸</span><span>Toys & play</span></a>
+        <a class="category-card" href="#shop"><span class="category-icon" aria-hidden="true">🧺</span><span>Clothing</span></a>
+        <a class="category-card" href="#shop"><span class="category-icon" aria-hidden="true">🍼</span><span>Feeding</span></a>
+        <a class="category-card" href="#shop"><span class="category-icon" aria-hidden="true">🛁</span><span>Bath & care</span></a>
+      </div>
+    </section>
+
+    <section class="section products-section" id="shop">
+      <div class="section-heading">
+        <div><p class="eyebrow">The much-loved ones</p><h2>Little favorites</h2></div>
+        <p>Gentle on them, a little easier on you.</p>
+      </div>
+      <div class="product-grid">
+        <article class="product-card">
+          <div class="product-image"><span class="badge">Bestseller</span><span aria-hidden="true">🧸</span></div>
+          <div class="product-info"><h3>Cuddle Bear</h3><div class="product-meta"><span class="price">$24.00</span><button class="add-button" type="button">Add to bag</button></div></div>
+        </article>
+        <article class="product-card">
+          <div class="product-image"><span class="badge">Organic cotton</span><span aria-hidden="true">🧦</span></div>
+          <div class="product-info"><h3>Everyday Romper</h3><div class="product-meta"><span class="price">$32.00</span><button class="add-button" type="button">Add to bag</button></div></div>
+        </article>
+        <article class="product-card">
+          <div class="product-image"><span aria-hidden="true">🧴</span></div>
+          <div class="product-info"><h3>Soft & Snug Set</h3><div class="product-meta"><span class="price">$28.00</span><button class="add-button" type="button">Add to bag</button></div></div>
+        </article>
+        <article class="product-card">
+          <div class="product-image"><span class="badge">Little favorite</span><span aria-hidden="true">🧸</span></div>
+          <div class="product-info"><h3>Dreamy Rattle</h3><div class="product-meta"><span class="price">$18.00</span><button class="add-button" type="button">Add to bag</button></div></div>
+        </article>
+      </div>
+    </section>
+
+    <div class="promise" id="about">
+      <span>♡ Thoughtfully chosen</span>
+      <span>☁ Soft on sensitive skin</span>
+      <span>♻ Kind to the planet</span>
+      <span>📦 Packed with love</span>
+    </div>
+
+    <section class="newsletter">
+      <p class="eyebrow">A note from us</p>
+      <h2>Love, delivered.</h2>
+      <p>Get sweet updates, new arrivals, and 10% off your first order.</p>
+      <form class="newsletter-form">
+        <input type="email" aria-label="Email address" placeholder="Your email address" required>
+        <button type="submit">Count me in</button>
+      </form>
+      <p class="form-message" aria-live="polite"></p>
+    </section>
+  </main>
+
+  <footer>
+    <span>© 2025 Tiny Care. Made with a little extra love.</span>
+    <span>For all the little moments ♡</span>
+  </footer>
+  <script>
+    const cartCount = document.querySelector(".cart-count");
+    let cartItems = 0;
+
+    document.querySelectorAll(".add-button").forEach((button) => {
+      button.addEventListener("click", () => {
+        cartItems += 1;
+        cartCount.textContent = cartItems;
+        button.textContent = "Added ✓";
+        window.setTimeout(() => { button.textContent = "Add to bag"; }, 1100);
+      });
+    });
+
+    document.querySelector(".newsletter-form").addEventListener("submit", (event) => {
+      event.preventDefault();
+      document.querySelector(".form-message").textContent = "You're on the list — thanks for stopping by!";
+      event.currentTarget.reset();
+    });
+  </script>
+</body>
+</html>
