@@ -211,7 +211,7 @@ pipeline {
                     else
                         echo "ERROR: Expected title was not found."
                         echo "Actual title:"
-                        grep -i "<title>" /tmp/mevi-site.html || true
+                        grep -i "Tiny Care — Baby Shop" /tmp/mevi-site.html || true
                         exit 1
                     fi
                 '''
